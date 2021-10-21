@@ -12,6 +12,14 @@ TEST(SharedPtr, EmptyConstructor) {
   ASSERT_EQ(p.get(), nullptr);
   ASSERT_EQ(p.get_counter(), nullptr);
 }
+TEST(SharedPtr, Construct_from_null) {
+  int* ptr;
+  ptr = nullptr;
+  SharedPtr<int> p(ptr);
+
+  ASSERT_EQ(p.get(), nullptr);
+  ASSERT_EQ(p.get_counter(), nullptr);
+}
 TEST(SharedPtr, PointerConstructor) {
   SharedPtr<int> p(new int{5});
 
