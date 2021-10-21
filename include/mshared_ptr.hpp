@@ -41,8 +41,10 @@ SharedPtr<T>::SharedPtr() : pointer(nullptr), counter(nullptr) {}
 
 template <typename T>
 SharedPtr<T>::SharedPtr(T *ptr): pointer(ptr){
-  if (ptr == nullptr) counter = nullptr;
-  else counter = new std::atomic_uint{1};
+  if (ptr == nullptr)
+    counter = nullptr;
+  else
+    counter = new std::atomic_uint{1};
 }
 
 template <typename T>
