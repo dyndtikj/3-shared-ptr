@@ -28,7 +28,7 @@ class SharedPtr {
   auto operator->() const -> T *;
 
   auto get() -> T *;
-  auto get_counter() -> size_t;
+  auto get_counter() -> std::atomic_uint* ;
   void reset();
   void reset(T *ptr);
   void swap(SharedPtr &r);
@@ -115,8 +115,8 @@ auto SharedPtr<T>::get() -> T * {
 }
 
 template <typename T>
-auto SharedPtr<T>::get_counter() -> size_t{
-  return static_cast<size_t>(*counter);
+auto SharedPtr<T>::get_counter() -> std::atomic_uint* {
+  return counter;
 }
 
 template <typename T>
