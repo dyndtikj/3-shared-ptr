@@ -68,7 +68,7 @@ SharedPtr<T>::~SharedPtr() {
   if (--(*counter) == 0) {
     // all errors with extra free it's a programmer's problem due to his
     // bad knowledge and understanding of shared ptr
-    //delete pointer;
+    delete pointer;
     delete counter;
   }
 }
