@@ -5,8 +5,6 @@
 
 #include "atomic"
 #include <iostream>
-#include <atomic>
-#include <iostream>
 #include <utility>
 
 template <typename T>
@@ -14,6 +12,7 @@ class SharedPtr {
  private:
   T *pointer;
   std::atomic_uint *counter;
+
  public:
   SharedPtr();
   explicit SharedPtr(T *ptr);
