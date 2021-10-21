@@ -25,20 +25,17 @@ string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra")
 string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
 string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 
-# new versions of cmake contain gtest search files
-# commented out to increase the build speed.
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 
-add_library(${PROJECT_NAME} STATIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/sources/mshared_ptr.cpp
+add_library(${PROJECT_NAME} INTERFACE
 )
 
 add_executable(demo
   ${CMAKE_CURRENT_SOURCE_DIR}/demo/main.cpp
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(${PROJECT_NAME} INTERFACE
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include>"
 )
