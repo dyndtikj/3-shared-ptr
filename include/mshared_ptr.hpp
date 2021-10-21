@@ -28,7 +28,7 @@ class SharedPtr {
   auto operator->() const -> T *;
 
   auto get() -> T *;
-  auto get_counter() -> std::atomic_uint* ;
+  auto get_counter() -> std::atomic_uint*;
   void reset();
   void reset(T *ptr);
   void swap(SharedPtr &r);
