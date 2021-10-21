@@ -1,18 +1,30 @@
 #include <mshared_ptr.hpp>
 #include <iostream>
-#include <memory>
 
 int main() {
-  std::cout<<"wiekdfw";
   int a = 100;
-  a++;
   int* ptr = &a;
+  int b= 200;
+  int* p = &b;
+  int c=300;
+  int*s =&c;
   SharedPtr<int> ptr2(ptr);
-  std::cout<<"wiekdfw";
-  SharedPtr<int> ptr3(ptr2);
-  SharedPtr<int> ptr4;
+  SharedPtr<int> ptr3(p);
+  SharedPtr<int> ptr4(s);
 
-  SharedPtr<int> ptr5 = ptr2;
+  ptr3= std::move(ptr2);
+
+//  ptr2=ptr3=ptr4;
+//  std::cout<<ptr2.use_count();
+  std::cout<<ptr3.use_count();
+  std::cout<<ptr4.use_count();
+//  std::cout<<*ptr2.get();
+
+  std::cout<<*ptr3;
+  std::cout<<*ptr4.get();
+  ptr3.reset();
+  std::cout<<ptr4.use_count();
+
   SharedPtr<int> ptr6 = std::move(ptr3);
   return 0;
 }

@@ -18,10 +18,10 @@ class SharedPtr {
   SharedPtr();
   explicit SharedPtr(T *ptr);
   SharedPtr(const SharedPtr &r);
-  SharedPtr(SharedPtr &&r) ;
+  SharedPtr(SharedPtr &&r) noexcept;
   ~SharedPtr();
   auto operator=(const SharedPtr &r) -> SharedPtr &;
-  auto operator=(SharedPtr &&r) -> SharedPtr &;
+  auto operator=(SharedPtr &&r) noexcept -> SharedPtr &;
 
   // Check if this points to object
   explicit operator bool() const;
@@ -29,11 +29,11 @@ class SharedPtr {
   auto operator->() const -> T *;
 
   auto get() -> T *;
-  auto get_counter() const -> const std::atomic_uint *;
+  auto get_counter() -> size_t;
   void reset();
   void reset(T *ptr);
   void swap(SharedPtr &r);
-  // returns quantity of ptr's which point to the same obj
+  // returns quantity of pointers which point to the same obj
   [[nodiscard]] auto use_count() const -> size_t;
 };
 
@@ -53,8 +53,8 @@ SharedPtr<T>::SharedPtr(const SharedPtr &r) : pointer(r.pointer),
 }
 
 template <typename T>
-SharedPtr<T>::SharedPtr(SharedPtr &&r) : pointer(r.pointer),
-                                         counter(r.counter)
+SharedPtr<T>::SharedPtr(SharedPtr &&r) noexcept: pointer(r.pointer),
+                                                 counter(r.counter)
 
 {
   r.pointer = nullptr;
@@ -65,23 +65,27 @@ template <typename T>
 SharedPtr<T>::~SharedPtr() {
   if (!counter) return;
   if (--(*counter) == 0) {
-    //if (pointer) delete pointer;
-    if (counter) delete counter;
+    // all errors with extra free it's a programmer's problem due to his
+    // bad knowledge and understanding of shared ptr
+    //delete pointer;
+    delete counter;
   }
 }
+
 template <typename T>
 auto SharedPtr<T>::operator=(const SharedPtr &r) -> SharedPtr & {
   if (this == &r) {
     return *this;
   }
   this->~SharedPtr();
-  pointer = r.pointer;
-  counter = r.counter;
+  this->pointer = r.pointer;
+  this->counter = r.counter;
   (*counter)++;
   return *this;
 }
+
 template <typename T>
-auto SharedPtr<T>::operator=(SharedPtr &&r) -> SharedPtr & {
+auto SharedPtr<T>::operator=(SharedPtr &&r) noexcept -> SharedPtr & {
   if (this == &r) {
     return *this;
   }
@@ -92,10 +96,12 @@ auto SharedPtr<T>::operator=(SharedPtr &&r) -> SharedPtr & {
   r.counter = nullptr;
   return *this;
 }
+
 template <typename T>
 SharedPtr<T>::operator bool() const {
   return pointer != nullptr;
 }
+
 template <typename T>
 auto SharedPtr<T>::operator*() const -> T & {
   return *pointer;
@@ -110,22 +116,29 @@ auto SharedPtr<T>::get() -> T * {
 }
 
 template <typename T>
-auto SharedPtr<T>::get_counter() const -> const std::atomic_uint * {
-  return counter;
+auto SharedPtr<T>::get_counter() -> size_t{
+  return static_cast<size_t>(*counter);
 }
+
 template <typename T>
 void SharedPtr<T>::reset() {
+  // call =(&&) and destructor for this shared ptr is called
   *this = std::move(SharedPtr());
 }
+
 template <typename T>
 void SharedPtr<T>::reset(T *ptr) {
+  // call =(&&) and destructor for this shared ptr is called
   *this = std::move(SharedPtr<T>(ptr));
 }
+
 template <typename T>
 void SharedPtr<T>::swap(SharedPtr &r) {
+  // simple exchange of fields
   std::swap(pointer, r.pointer);
   std::swap(counter, r.counter);
 }
+
 template <typename T>
 auto SharedPtr<T>::use_count() const -> size_t {
   return static_cast<size_t>(*counter);
