@@ -13,6 +13,8 @@ class SharedPtr {
   std::atomic_uint* counter;
 
  public:
+ // SharedPtr() : pointer{nullptr}, counter(nullptr){}
+
   SharedPtr();
 
   explicit SharedPtr(T* ptr);
