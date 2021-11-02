@@ -3,9 +3,10 @@
 #ifndef INCLUDE_MSHARED_PTR_HPP_
 #define INCLUDE_MSHARED_PTR_HPP_
 
-#include "atomic"
 #include <iostream>
 #include <utility>
+
+#include "atomic"
 
 template <typename T>
 class SharedPtr {
@@ -28,7 +29,7 @@ class SharedPtr {
   auto operator->() const -> T *;
 
   auto get() -> T *;
-  auto get_counter() -> std::atomic_uint*;
+  auto get_counter() -> std::atomic_uint *;
   void reset();
   void reset(T *ptr);
   void swap(SharedPtr &r);
@@ -40,7 +41,7 @@ template <typename T>
 SharedPtr<T>::SharedPtr() : pointer(nullptr), counter(nullptr) {}
 
 template <typename T>
-SharedPtr<T>::SharedPtr(T *ptr): pointer(ptr){
+SharedPtr<T>::SharedPtr(T *ptr) : pointer(ptr) {
   if (ptr == nullptr)
     counter = nullptr;
   else
@@ -48,14 +49,15 @@ SharedPtr<T>::SharedPtr(T *ptr): pointer(ptr){
 }
 
 template <typename T>
-SharedPtr<T>::SharedPtr(const SharedPtr &r) : pointer(r.pointer),
-                                              counter(r.counter) {
+SharedPtr<T>::SharedPtr(const SharedPtr &r)
+    : pointer(r.pointer), counter(r.counter) {
   (*counter)++;
 }
 
 template <typename T>
-SharedPtr<T>::SharedPtr(SharedPtr &&r) noexcept: pointer(r.pointer),
-                                                 counter(r.counter)
+SharedPtr<T>::SharedPtr(SharedPtr &&r) noexcept
+    : pointer(r.pointer),
+      counter(r.counter)
 
 {
   r.pointer = nullptr;
