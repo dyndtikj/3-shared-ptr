@@ -5,7 +5,6 @@
 
 #include <iostream>
 #include <utility>
-
 #include "atomic"
 
 template <typename T>
