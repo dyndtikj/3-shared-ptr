@@ -2,12 +2,12 @@
 #include <iostream>
 
 int main() {
-  int a = 100;
-  int* ptr = &a;
-  int b= 200;
-  int* p = &b;
-  int c=300;
-  int*s =&c;
+
+  int* ptr = new int(100);
+
+  int* p = new int(200);
+
+  int*s = new int(300);
   SharedPtr<int> ptr2(ptr);
   SharedPtr<int> ptr3(p);
   SharedPtr<int> ptr4(s);
