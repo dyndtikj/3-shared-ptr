@@ -46,7 +46,7 @@ target_link_libraries(demo ${PROJECT_NAME})
 
 if(BUILD_TESTS)
   add_executable(tests
-          ${CMAKE_CURRENT_SOURCE_DIR}/tests/example.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
   )
   target_link_libraries(tests ${PROJECT_NAME} GTest::gtest_main)
   enable_testing()
