@@ -121,7 +121,7 @@ TEST(SharedPtr, Is_Movable){
       std::is_move_assignable<SharedPtr<double>>::value);
 }
 
-TEST(SharedPtr, Is_Constructible){
+TEST(SharedPtr, Is_Copy_allowed){
   EXPECT_TRUE(
       std::is_copy_constructible<SharedPtr<Test_Class>>::value);
   EXPECT_TRUE(
