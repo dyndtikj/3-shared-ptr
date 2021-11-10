@@ -55,12 +55,10 @@ SharedPtr<T>::SharedPtr(const SharedPtr &r)
 
 template <typename T>
 SharedPtr<T>::SharedPtr(SharedPtr &&r) noexcept
-    : pointer(r.pointer),
-      counter(r.counter)
-
-{
-  r.pointer = nullptr;
-  r.counter = nullptr;
+    : pointer(std::move(r.pointer)),
+      counter(std::move(r.counter)) {
+    r.pointer = nullptr;
+    r.counter = nullptr;
 }
 
 template <typename T>
@@ -92,8 +90,8 @@ auto SharedPtr<T>::operator=(SharedPtr &&r) noexcept -> SharedPtr & {
     return *this;
   }
   this->~SharedPtr();
-  pointer = r.pointer;
-  counter = r.counter;
+  pointer = std::move(r.pointer);
+  counter = std::move(r.counter);
   r.pointer = nullptr;
   r.counter = nullptr;
   return *this;

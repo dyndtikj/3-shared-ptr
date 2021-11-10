@@ -109,3 +109,25 @@ TEST(SharedPtr, Operator_bool)
   SharedPtr p2(new int{12});
   ASSERT_EQ(p2.operator bool(), true);
 }
+
+TEST(SharedPtr, Is_Movable){
+  EXPECT_TRUE(
+      std::is_move_constructible<SharedPtr<Test_Class>>::value);
+  EXPECT_TRUE(
+      std::is_move_assignable<SharedPtr<Test_Class>>::value);
+  EXPECT_TRUE(
+      std::is_move_constructible<SharedPtr<double>>::value);
+  EXPECT_TRUE(
+      std::is_move_assignable<SharedPtr<double>>::value);
+}
+
+TEST(SharedPtr, Is_Constructible){
+  EXPECT_TRUE(
+      std::is_copy_constructible<SharedPtr<Test_Class>>::value);
+  EXPECT_TRUE(
+      std::is_copy_assignable<SharedPtr<Test_Class>>::value);
+  EXPECT_TRUE(
+      std::is_copy_constructible<SharedPtr<double>>::value);
+  EXPECT_TRUE(
+      std::is_copy_assignable<SharedPtr<double>>::value);
+}
